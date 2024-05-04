@@ -1,0 +1,77 @@
+.logoUrl {
+  height: 50px;
+  width: 40px;
+}
+.cardHeadWrapper {
+  display: flex;
+}
+.cardHeader {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+}
+.cardWrapper {
+  box-shadow: 5px 5px 5px -3px rgba(0, 0, 0, 0.1),
+    -5px 5px 5px -3px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  margin-top: 10px;
+  border-radius: 1rem;
+}
+.cardContainer {
+  padding: 20px 20px 10px 20px;
+}
+.companyInfo {
+  display: flex;
+  flex-direction: column;
+}
+.cardBtnFooter {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+.companyName {
+  margin: 3px;
+  color: #8b8b8b;
+}
+.companySalary {
+  display: flex;
+  align-items: center;
+  color: #4d596a;
+  gap: 5px;
+}
+.cardExp {
+  color: #8b8b8b;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 13;
+}
+.cardExpValue {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.companyAbout {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+.companyAboutUs {
+  margin: 0;
+}
+.jobRole {
+  margin: 3px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.companyLocation {
+  margin-top: 5px;
+  margin-left: 3px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.companyDetails {
+  font-size: 14px;
+}
+.checkBox {
+  margin-top: 2px;
+}
