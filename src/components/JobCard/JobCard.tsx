@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import styles from "./JobCard.module.css";
 
 const cardData = {
@@ -32,16 +33,17 @@ const JobCard = () => {
           Estimated Salary:{" "}
           <span>{`${cardData.salaryCurrencyCode} ${cardData?.minJdSalary}-${cardData?.maxJdSalary}`}</span>
         </p>
-        <h3>About us</h3>
+        <p>About Company:</p>
+        <h4>About us</h4>
         <p>
             {cardData.jobDetailsFromCompany}
         </p>
         <p>Minimum Experience</p>
         <p>{cardData?.minExp ? cardData?.minExp : "-"}</p>
 
-        <div>
-            <button>Easy Apply</button>
-            <button>Unlock referral asks</button>
+        <div className={styles.cardBtnFooter}>
+            <Button sx={{backgroundColor:'#54EFC3',padding:"10px",borderRadius:'8px'}} variant="contained">Easy Apply</Button>
+            <Button sx={{backgroundColor:'#4943DA',padding:"10px",borderRadius:'8px'}} variant="contained">Unlock referral asks</Button>
         </div>
       </div>
     </div>
