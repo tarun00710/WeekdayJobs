@@ -3,7 +3,7 @@ import styles from "./JobCard.module.css";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import { CardDataType } from "./JobCard.types";
-import { getSalaryRange } from "../../../utils/constants";
+import toUpperCamelCase, { getSalaryRange } from "../../../utils/constants";
 
 const JobCard = ({ cardData }: { cardData: CardDataType }) => {
   return (
@@ -17,8 +17,8 @@ const JobCard = ({ cardData }: { cardData: CardDataType }) => {
           />
           <div className={styles.cardHeader}>
             <p className={styles.companyName}>{cardData?.companyName}</p>
-            <p className={styles.jobRole}>{cardData?.jobRole}</p>
-            <p className={styles.companyLocation}>{cardData?.location}</p>
+            <p className={styles.jobRole}>{cardData?.jobRole && toUpperCamelCase(cardData?.jobRole)}</p>
+            <p className={styles.companyLocation}>{toUpperCamelCase(cardData?.location)}</p>
           </div>
         </div>
         <p className={styles.companySalary}>
