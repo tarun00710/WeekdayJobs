@@ -1,10 +1,11 @@
-import JobCard from "./components/JobCard/JobCard/JobCard";
+
 import './App.css'
+import Homepage from "./components/Homepage/Homepage";
 
 function App() {
   return (
     <div>
-     <JobCard/>
+     <Homepage/>
     </div>
   );
 }

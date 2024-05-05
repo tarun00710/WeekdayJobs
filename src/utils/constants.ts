@@ -1,3 +1,15 @@
+export const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 export const getSalaryRange = (minJdSalary?: number, maxJdSalary?: number) => {
   if (minJdSalary && maxJdSalary) {
     return `${minJdSalary}-${maxJdSalary}`;

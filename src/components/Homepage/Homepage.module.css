@@ -1,0 +1,10 @@
+.jobCardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  justify-content: space-around;
+}
+
+.loading{
+    text-align: center;
+}

@@ -38,6 +38,7 @@
   align-items: center;
   color: #4d596a;
   gap: 5px;
+  margin-top: 0;
 }
 .cardExp {
   color: #8b8b8b;
@@ -71,6 +72,7 @@
 }
 .companyDetails {
   font-size: 14px;
+  margin-top: 2px;
 }
 .checkBox {
   margin-top: 2px;
