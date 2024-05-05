@@ -4,12 +4,21 @@ import { fetchJobCards } from "../../api/api";
 import styles from "./Homepage.module.css";
 import { CardDataType } from "../JobCard/JobCard.types";
 import { debounce } from "../../utils/constants";
+import FilterSection from "../Filters/FilterSection";
 
 const Homepage = () => {
   const limit = 10;
   const [jobCards, setJobCards] = useState<CardDataType[]>([]);
   const [offset, setOffset] = useState(0);
   const [isloading, setIsLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
+
+
+  const filteredJobCards = jobCards?.filter(job => {
+    const companyName = job.companyName ? job.companyName.toLowerCase() : '';
+    const searchValueLower = searchValue.toLowerCase(); 
+    return companyName.includes(searchValueLower);
+  });
 
   const fetchData = async () => {
     try {
@@ -26,8 +35,6 @@ const Homepage = () => {
     fetchData();
   }, [offset]);
 
-
-
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop + 1 >=
@@ -37,6 +44,7 @@ const Homepage = () => {
       setOffset((prev) => prev + limit);
     }
   };
+
   const debouncedScroll = debounce(handleScroll, 300);
   useEffect(() => {
     window.addEventListener("scroll", debouncedScroll);
@@ -47,8 +55,12 @@ const Homepage = () => {
 
   return (
     <div>
+      <FilterSection
+        setSearchValue={setSearchValue}
+        searchValue={searchValue}
+      />
       <div className={styles.jobCardsContainer}>
-        {jobCards.map((jobCard, index) => (
+        {filteredJobCards?.map((jobCard, index) => (
           <div key={index}>
             <JobCard cardData={jobCard} />
           </div>
