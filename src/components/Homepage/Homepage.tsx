@@ -1,52 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import JobCard from "../JobCard/JobCard";
 import { fetchJobCards } from "../../api/api";
 import styles from "./Homepage.module.css";
 import { CardDataType } from "../JobCard/JobCard.types";
-import { LIMIT, debounce } from "../../utils/constants";
+import { LIMIT } from "../../utils/constants";
 import FilterSection from "../Filters/FilterSection";
 import { SelectType } from "./Homepage.types";
 
 const Homepage = () => {
   const [jobCards, setJobCards] = useState<CardDataType[]>([]);
   const [offset, setOffset] = useState(0);
-  const [isloading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [selectedExperience, setSelectedExperience] =
     useState<SelectType | null>(null);
-  const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useState<SelectType[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<SelectType[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<SelectType[]>([]);
   const [selectedPay, setSelectedPay] = useState<SelectType | null>(null);
 
-  const filteredJobCards = jobCards.filter((job) => {
-    const companyName = job.companyName ? job.companyName.toLowerCase() : "";
-    const searchValueLower = searchValue.toLowerCase();
-    const experienceFilter =
-      !selectedExperience ||
-      (job?.minExp <= selectedExperience?.value &&
-        job?.maxExp >= selectedExperience?.value);
-    const roleFilter =
-      selectedRoles.length === 0 ||
-      selectedRoles.some((role) => role.value === job.jobRole);
-    const locationFilter =
-      selectedLocation.length === 0 ||
-      selectedLocation.some((location) => location.value === job.location);
-    const payFilter = !selectedPay || job?.minJdSalary >= selectedPay?.value;
-    return (
-      companyName.includes(searchValueLower) &&
-      experienceFilter &&
-      roleFilter &&
-      locationFilter &&
-      payFilter
-    );
-  });
-
   const fetchData = async () => {
     try {
       const responseData = await fetchJobCards(LIMIT, offset);
-      const newCards = responseData?.jdList;
-      setJobCards((prevJobCards) => [...prevJobCards, ...newCards]);
+      const newCards = responseData?.jdList || [];
       const uniqueLocations = [
         ...new Set(newCards.map((card) => card.location)),
       ];
@@ -55,6 +31,7 @@ const Homepage = () => {
         label: location,
       }));
       setLocations(locationsOptions);
+      setJobCards((prevJobCards) => [...prevJobCards, ...newCards]);
     } catch (error) {
       console.error(error);
     }
@@ -65,29 +42,68 @@ const Homepage = () => {
     fetchData();
   }, [offset]);
 
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop + 1 >=
-      document.documentElement.scrollHeight
-    ) {
-      setIsLoading(true);
-      setOffset((prev) => prev + limit);
-    }
-  };
-
-  const debouncedScroll = debounce(handleScroll, 300);
   useEffect(() => {
-    window.addEventListener("scroll", debouncedScroll);
-    return () => {
-      window.removeEventListener("scroll", debouncedScroll);
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
+        document.documentElement.scrollHeight
+      ) {
+        setIsLoading(true);
+        setOffset((prev) => prev + LIMIT);
+      }
     };
-  }, [debouncedScroll]);
+
+    const throttledScroll = (func, delay) => {
+      let timer;
+      return function () {
+        if (!timer) {
+          timer = setTimeout(() => {
+            func();
+            timer = null;
+          }, delay);
+        }
+      };
+    };
+
+    const throttledHandleScroll = throttledScroll(handleScroll, 300);
+
+    window.addEventListener("scroll", throttledHandleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", throttledHandleScroll);
+    };
+  }, []);
+
+  const filteredJobCards = useMemo(() => {
+    return jobCards.filter((job) => {
+      const companyName = job.companyName ? job.companyName.toLowerCase() : "";
+      const searchValueLower = searchValue.toLowerCase();
+      const experienceFilter =
+        !selectedExperience ||
+        (job?.minExp <= selectedExperience?.value &&
+          job?.maxExp >= selectedExperience?.value);
+      const roleFilter =
+        selectedRoles.length === 0 ||
+        selectedRoles.some((role) => role.value === job.jobRole);
+      const locationFilter =
+        selectedLocation.length === 0 ||
+        selectedLocation.some((location) => location.value === job.location);
+      const payFilter =
+        !selectedPay || (job?.minJdSalary >= selectedPay?.value);
+      return (
+        companyName.includes(searchValueLower) &&
+        experienceFilter &&
+        roleFilter &&
+        locationFilter &&
+        payFilter
+      );
+    });
+  }, [jobCards, searchValue, selectedExperience, selectedRoles, selectedLocation, selectedPay]);
 
   const handleExperienceChange = (selectedExperience: SelectType) => {
-    console.log(selectedExperience);
-
     setSelectedExperience(selectedExperience);
   };
+
   const handleLocationChange = (selectedLocation: SelectType[]) => {
     setSelectedLocation(selectedLocation);
   };
@@ -96,9 +112,13 @@ const Homepage = () => {
     setSelectedRoles(selectedRole);
   };
 
-  const roleOptions = [...new Set(jobCards.map((card) => card.jobRole))].map(
-    (role) => ({ value: role, label: role })
-  );
+  const roleOptions = useMemo(() => {
+    return [...new Set(jobCards.map((card) => card.jobRole))].map((role) => ({
+      value: role,
+      label: role,
+    }));
+  }, [jobCards]);
+
   const handleBasePay = (selectedPay: SelectType) => {
     setSelectedPay(selectedPay);
   };
@@ -116,13 +136,13 @@ const Homepage = () => {
         handleBasePay={handleBasePay}
       />
       <div className={styles.jobCardsContainer}>
-        {filteredJobCards?.map((jobCard, index) => (
+        {filteredJobCards.map((jobCard, index) => (
           <div key={index}>
             <JobCard cardData={jobCard} />
           </div>
         ))}
       </div>
-      {isloading && <p className={styles.loading}>Loading....</p>}
+      {isLoading && <p className={styles.loading}>Loading....</p>}
     </div>
   );
 };
