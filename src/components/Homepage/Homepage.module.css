@@ -1,8 +1,9 @@
 .jobCardsContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 60px;
+  gap: 40px;
   justify-content: space-around;
+  padding: 0 5px 0 5px;
 }
 
 .loading{

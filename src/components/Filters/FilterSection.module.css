@@ -1,8 +1,15 @@
 .filterSearch {
-  height: 30px;
+  height: 36px;
   width: 180px;
-  border: 1.2px solid #959595;
+  border: 1.2px solid #e5e2e2;
   border-radius: 5px;
   padding-left: 20px;
   outline: none;
+  font-size: 16px;
+}
+.filterOptions{
+    display: flex;
+    padding: 40px;
+    align-items: center;
+    gap: 10px;
 }
