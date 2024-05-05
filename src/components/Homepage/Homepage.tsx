@@ -3,20 +3,21 @@ import JobCard from "../JobCard/JobCard";
 import { fetchJobCards } from "../../api/api";
 import styles from "./Homepage.module.css";
 import { CardDataType } from "../JobCard/JobCard.types";
-import { debounce } from "../../utils/constants";
+import { LIMIT, debounce } from "../../utils/constants";
 import FilterSection from "../Filters/FilterSection";
 import { SelectType } from "./Homepage.types";
 
 const Homepage = () => {
-  const limit = 10;
   const [jobCards, setJobCards] = useState<CardDataType[]>([]);
   const [offset, setOffset] = useState(0);
   const [isloading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
-  const [selectedExperience, setSelectedExperience] = useState(null);
+  const [selectedExperience, setSelectedExperience] =
+    useState<SelectType | null>(null);
   const [locations, setLocations] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState<SelectType[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<SelectType[]>([]);
+  const [selectedPay, setSelectedPay] = useState<SelectType | null>(null);
 
   const filteredJobCards = jobCards.filter((job) => {
     const companyName = job.companyName ? job.companyName.toLowerCase() : "";
@@ -31,18 +32,19 @@ const Homepage = () => {
     const locationFilter =
       selectedLocation.length === 0 ||
       selectedLocation.some((location) => location.value === job.location);
+    const payFilter = !selectedPay || job?.minJdSalary >= selectedPay?.value;
     return (
       companyName.includes(searchValueLower) &&
       experienceFilter &&
       roleFilter &&
-      locationFilter
+      locationFilter &&
+      payFilter
     );
   });
-  
 
   const fetchData = async () => {
     try {
-      const responseData = await fetchJobCards(limit, offset);
+      const responseData = await fetchJobCards(LIMIT, offset);
       const newCards = responseData?.jdList;
       setJobCards((prevJobCards) => [...prevJobCards, ...newCards]);
       const uniqueLocations = [
@@ -81,20 +83,25 @@ const Homepage = () => {
     };
   }, [debouncedScroll]);
 
-  const handleExperienceChange = (selectedExperience) => {
+  const handleExperienceChange = (selectedExperience: SelectType) => {
+    console.log(selectedExperience);
+
     setSelectedExperience(selectedExperience);
   };
-  const handleLocationChange = (selectedLocation:SelectType[]) => {
+  const handleLocationChange = (selectedLocation: SelectType[]) => {
     setSelectedLocation(selectedLocation);
   };
 
-  const handleRoleChange = (selectedRole:SelectType[]) => {
+  const handleRoleChange = (selectedRole: SelectType[]) => {
     setSelectedRoles(selectedRole);
   };
 
   const roleOptions = [...new Set(jobCards.map((card) => card.jobRole))].map(
     (role) => ({ value: role, label: role })
   );
+  const handleBasePay = (selectedPay: SelectType) => {
+    setSelectedPay(selectedPay);
+  };
 
   return (
     <div>
@@ -106,6 +113,7 @@ const Homepage = () => {
         handleLocationChange={handleLocationChange}
         roleOptions={roleOptions}
         handleRoleChange={handleRoleChange}
+        handleBasePay={handleBasePay}
       />
       <div className={styles.jobCardsContainer}>
         {filteredJobCards?.map((jobCard, index) => (

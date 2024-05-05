@@ -1,16 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./FilterSection.module.css";
 import Select from "react-select";
-
-type SearchValueType = {
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-  onChangeExperience: (value: any) => void;
-  locations: any;
-  handleLocationChange: any;
-  roleOptions: any;
-  handleRoleChange: any;
-};
+import { SelectType } from "../Homepage/Homepage.types";
+import { FilterValuePropsType } from "./FilterSection.types";
 
 const FilterSection = ({
   searchValue,
@@ -20,20 +12,33 @@ const FilterSection = ({
   handleLocationChange,
   roleOptions,
   handleRoleChange,
-}: SearchValueType) => {
-  const [selectedOption, setSelectedOption] = useState(null);
+  handleBasePay,
+}: FilterValuePropsType) => {
+  
+  const [selectedOption, setSelectedOption] = useState<SelectType | any>(null);
   const inputHandler = (value: string) => {
     setSearchValue(value);
   };
 
-  const options = Array.from({ length: 10 }, (_, i) => ({
+  const optionsExperience = Array.from({ length: 10 }, (_, i) => ({
     value: i + 1,
     label: `${i + 1}`,
   }));
-  const handleChange = (selectedOption) => {
+  const optionsPay = Array.from({ length: 21 }, (_, i) => ({
+    value: i * 10,
+    label: `${i * 10}`,
+  }));
+  const handleChange = (selectedOption: SelectType) => {
+    console.log(selectedOption);
+
     setSelectedOption(selectedOption);
     if (onChangeExperience) {
       onChangeExperience(selectedOption);
+    }
+  };
+  const handlePay = (selectedOption: SelectType) => {
+    if (handleBasePay) {
+      handleBasePay(selectedOption);
     }
   };
   return (
@@ -48,8 +53,9 @@ const FilterSection = ({
       <Select
         value={selectedOption}
         onChange={handleChange}
-        options={options}
+        options={optionsExperience}
         placeholder="Min Experience"
+        isClearable
       />
       <Select
         options={locations}
@@ -63,12 +69,12 @@ const FilterSection = ({
         placeholder="Select Roles"
         isMulti
       />
-      {/* <Select
-        options={roleOptions}
-        onChange={handleBasePay}
+      <Select
+        options={optionsPay}
+        onChange={handlePay}
         placeholder="Minimum Base Pay Salary"
-        isMulti
-      /> */}
+        isClearable
+      />
     </div>
   );
 };

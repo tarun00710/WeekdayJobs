@@ -4,7 +4,7 @@ import styles from "./JobCard.module.css";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
 import { CardDataType } from "./JobCard.types";
-import toUpperCamelCase, { getSalaryRange } from "../../utils/constants";
+import { getSalaryRange,toUpperCamelCase } from "../../utils/constants";
 
 const JobCard = ({ cardData }: { cardData: CardDataType}) => {
   const [showFullDescription, setShowFullDescription] = useState(false);

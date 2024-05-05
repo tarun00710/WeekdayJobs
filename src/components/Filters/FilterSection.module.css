@@ -3,13 +3,13 @@
   width: 180px;
   border: 1.2px solid #e5e2e2;
   border-radius: 5px;
-  padding-left: 20px;
   outline: none;
   font-size: 16px;
 }
 .filterOptions{
     display: flex;
-    padding: 40px;
+    padding: 20px 0px 0px 10px;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    flex-wrap: wrap;
 }

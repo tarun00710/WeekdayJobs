@@ -31,4 +31,4 @@ export const toUpperCamelCase = (str: string | undefined | null) => {
     .join(" ");
 };
 
-export default toUpperCamelCase;
+export const LIMIT = 10;
