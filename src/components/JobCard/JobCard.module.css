@@ -40,7 +40,7 @@
 }
 .companyName {
   margin: 3px;
-  color: #8b8b8b;
+  color: #787878;
 }
 .companySalary {
   display: flex;
@@ -50,7 +50,7 @@
   margin-top: 0;
 }
 .cardExp {
-  color: #8b8b8b;
+  color: #787878;
   font-weight: 600;
   letter-spacing: 1px;
   font-size: 13;

@@ -13,19 +13,17 @@ const JobCard = ({ cardData }: { cardData: CardDataType }) => {
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
-  const renderDescription = () => {
-    if (showFullDescription) {
-      return cardData?.jobDetailsFromCompany;
-    } else {
-      return `${cardData?.jobDetailsFromCompany.slice(0, 200)}...`;
-    }
-  };
 
   return (
     <div className={styles.cardWrapper}>
       <div className={styles.cardContainer}>
         <div className={styles.cardHeadWrapper}>
-          <img className={styles.logoUrl} src={cardData?.logoUrl} alt="logo" />
+          <img
+            className={styles.logoUrl}
+            src={cardData?.logoUrl}
+            alt="logo"
+            loading="lazy"
+          />
           <div className={styles.cardHeader}>
             <p className={styles.companyName}>{cardData?.companyName}</p>
             <p className={styles.jobRole}>
@@ -36,7 +34,6 @@ const JobCard = ({ cardData }: { cardData: CardDataType }) => {
             </p>
           </div>
         </div>
-        <p>{cardData.jdUid}</p>
         <p className={styles.companySalary}>
           Estimated Salary:
           <span>
@@ -49,16 +46,11 @@ const JobCard = ({ cardData }: { cardData: CardDataType }) => {
         </p>
         <p className={styles.companyAbout}>About Company:</p>
         <h4 className={styles.companyAboutUs}>About us</h4>
-        <p className={styles.companyDetails}>{renderDescription()}</p>
-        {cardData?.jobDetailsFromCompany.length > 200 && (
-          <Button
-            sx={{ fontSize: "10px" }}
-            onClick={toggleDescription}
-            variant="text"
-          >
-            {showFullDescription ? "Show Less" : "Show More"}
-          </Button>
-        )}
+        <JobDescription
+          description={cardData?.jobDetailsFromCompany}
+          showFullDescription={showFullDescription}
+          toggleDescription={toggleDescription}
+        />
         <p className={styles.cardExp}>Minimum Experience</p>
         <p className={styles.cardExpValue}>{cardData?.minExp || "-"} years</p>
 
@@ -77,3 +69,31 @@ const JobCard = ({ cardData }: { cardData: CardDataType }) => {
 };
 
 export default JobCard;
+
+
+const JobDescription = ({
+  description,
+  showFullDescription,
+  toggleDescription,
+}: {
+  description: string;
+  showFullDescription: boolean;
+  toggleDescription: () => void;
+}) => {
+  return (
+    <>
+      <p className={styles.companyDetails}>
+        {showFullDescription ? description : `${description.slice(0, 200)}...`}
+      </p>
+      {description.length > 200 && (
+        <Button
+          sx={{ fontSize: "10px" }}
+          onClick={toggleDescription}
+          variant="text"
+        >
+          {showFullDescription ? "Show Less" : "Show More"}
+        </Button>
+      )}
+    </>
+  );
+};

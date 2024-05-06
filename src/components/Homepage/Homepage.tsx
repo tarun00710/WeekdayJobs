@@ -50,19 +50,17 @@ const Homepage = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop + 1 >=
-        document.documentElement.scrollHeight
-      ) {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = window.innerHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollThreshold = 0.9;
+      if (scrollTop / (scrollHeight - clientHeight) >= scrollThreshold) {
         setIsLoading(true);
         setOffset((prev) => prev + LIMIT);
       }
     };
-
     const throttledHandleScroll = throttledScroll(handleScroll, 300);
-
     window.addEventListener("scroll", throttledHandleScroll);
-
     return () => {
       window.removeEventListener("scroll", throttledHandleScroll);
     };
@@ -74,8 +72,8 @@ const Homepage = () => {
       const searchValueLower = searchValue.toLowerCase();
       const experienceFilter =
         !selectedExperience ||
-        (job?.minExp <= selectedExperience?.value &&
-          job?.maxExp >= selectedExperience?.value);
+        (job?.minExp <= (selectedExperience?.value as number) &&
+          job?.maxExp >= (selectedExperience?.value as number));
       const roleFilter =
         selectedRoles.length === 0 ||
         selectedRoles.some((role) => role.value === job.jobRole);
