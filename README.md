@@ -1,31 +1,37 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 # WeekdayJobs
+
+## Overview
+
+WeekdayJobs is a candidate application platform built with React and Vite. It enables users to effortlessly browse job listings, apply filters based on their preferences, and enjoy a seamless browsing experience with infinite scroll functionality. The platform prioritizes a user-friendly interface.
+
+## Features
+
+- Browse through a wide array of job listings.
+- Filter job listings by various criteria including experience, location, and role.
+- Seamless browsing experience with infinite scroll functionality.
+- Intuitive interface for efficient job viewing and application.
+
+## Installation
+
+Follow these simple steps to set up WeekdayJobs locally:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/tarun00710/WeekdayJobs.git
+
+2. **Navigate to the project directory:**
+   ```bash
+   cd WeekdayJobs
+   
+3. **Install dependencies:**
+   ```bash
+   npm install
+
+4. **Start the development server** 
+   ```bash
+   npm run dev  
+
+5. **Click on the running port to view the application**
+
