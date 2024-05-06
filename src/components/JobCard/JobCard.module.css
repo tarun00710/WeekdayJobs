@@ -86,3 +86,21 @@
 .checkBox {
   margin-top: 2px;
 }
+.easyApplyButton {
+  background-color: #54EFC3;
+  padding: 10px;
+  border-radius: 8px;
+  color: black;
+  text-transform: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.unlockReferralButton {
+  background-color: #4943DA;
+  padding: 10px;
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 500;
+  font-size: 16px;
+}

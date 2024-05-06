@@ -23,6 +23,7 @@ const Homepage = () => {
     try {
       const responseData = await fetchJobCards(LIMIT, offset);
       const newCards = responseData?.jdList || [];
+
       const uniqueLocations = [
         ...new Set(newCards.map((card) => card.location)),
       ];
@@ -31,7 +32,12 @@ const Homepage = () => {
         label: location,
       }));
       setLocations(locationsOptions);
-      setJobCards((prevJobCards) => [...prevJobCards, ...newCards]);
+      setJobCards((prevJobCards) => {
+        let uniquePrevJobCards = prevJobCards.filter(
+          (card) => !newCards.some((newcard) => newcard.jdUid === card.jdUid)
+        );
+        return [...uniquePrevJobCards, ...newCards];
+      });
     } catch (error) {
       console.error(error);
     }
@@ -88,8 +94,7 @@ const Homepage = () => {
       const locationFilter =
         selectedLocation.length === 0 ||
         selectedLocation.some((location) => location.value === job.location);
-      const payFilter =
-        !selectedPay || (job?.minJdSalary >= selectedPay?.value);
+      const payFilter = !selectedPay || job?.minJdSalary >= selectedPay?.value;
       return (
         companyName.includes(searchValueLower) &&
         experienceFilter &&
@@ -98,7 +103,14 @@ const Homepage = () => {
         payFilter
       );
     });
-  }, [jobCards, searchValue, selectedExperience, selectedRoles, selectedLocation, selectedPay]);
+  }, [
+    jobCards,
+    searchValue,
+    selectedExperience,
+    selectedRoles,
+    selectedLocation,
+    selectedPay,
+  ]);
 
   const handleExperienceChange = (selectedExperience: SelectType) => {
     setSelectedExperience(selectedExperience);
