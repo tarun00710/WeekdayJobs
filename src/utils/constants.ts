@@ -1,4 +1,4 @@
-export const debounce = (func, delay) => {
+export const debounce = (func, delay:number) => {
   let timeoutId;
   return (...args) => {
     if (timeoutId) {
@@ -7,6 +7,18 @@ export const debounce = (func, delay) => {
     timeoutId = setTimeout(() => {
       func(...args);
     }, delay);
+  };
+};
+
+export const throttledScroll = (func:any, delay:number) => {
+  let timer;
+  return function () {
+    if (!timer) {
+      timer = setTimeout(() => {
+        func();
+        timer = null;
+      }, delay);
+    }
   };
 };
 

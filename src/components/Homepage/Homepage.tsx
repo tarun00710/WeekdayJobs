@@ -3,7 +3,7 @@ import JobCard from "../JobCard/JobCard";
 import { fetchJobCards } from "../../api/api";
 import styles from "./Homepage.module.css";
 import { CardDataType } from "../JobCard/JobCard.types";
-import { LIMIT } from "../../utils/constants";
+import { LIMIT, throttledScroll } from "../../utils/constants";
 import FilterSection from "../Filters/FilterSection";
 import { SelectType } from "./Homepage.types";
 
@@ -57,18 +57,6 @@ const Homepage = () => {
         setIsLoading(true);
         setOffset((prev) => prev + LIMIT);
       }
-    };
-
-    const throttledScroll = (func, delay) => {
-      let timer;
-      return function () {
-        if (!timer) {
-          timer = setTimeout(() => {
-            func();
-            timer = null;
-          }, delay);
-        }
-      };
     };
 
     const throttledHandleScroll = throttledScroll(handleScroll, 300);
